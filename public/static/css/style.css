@@ -1,7 +1,7 @@
 .header {
     background-color: #161622;
-    padding-bottom: 6px;
-    border-bottom: 1px solid #dee2e6;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a3d;
 }
 
 .header__inner {
@@ -53,13 +53,12 @@
     font-weight: 600;
     color: #0d0d14;
     background-color: #39ff88;
-    transition: box-shadow 0.2s ease, background-color 0.2s ease
 }
 
 .btn-neon:hover {
     color: #0d0d14;
     background: #39ff88;
-    box-shadow: 0px 0px 12px 0px #39ff88;
+    box-shadow: 5px 5px 0px -2px #ccfce9;
 }
 
 .userblock {
@@ -88,6 +87,114 @@
 
 .userblock__link:hover {
     color: #39ff88;
+}
+
+.page__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.page__lead {
+    color: #8b8ba7;
+}
+
+.card {
+    --bs-card-bg: #161622;
+    --bs-card-border-color: #2a2a3d;
+}
+
+.widget__title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+}
+
+.tag-cloud__item {
+    text-decoration: none;
+}
+
+.tag-cloud__item:hover {
+    color: #39ff88;
+    text-decoration: none;
+}
+
+.members {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.members__item {
+    display: flex;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 3px dashed #2a2a3d;
+}
+
+.members__item:last-child {
+    border-bottom: 0;
+}
+
+.members__rank {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #39ff88;
+}
+
+.members__link {
+    text-decoration: none;
+}
+
+.footer {
+    padding: 16px 0;
+    background-color: #161622;
+    border-top: 1px solid #2a2a3d;
+}
+
+.footer__inner {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: #8b8ba7;
+}
+
+.footer__code {
+    font-family: monospace;
+    color: #39ff88;
+}
+
+.tag-cloud__item--xs {
+    font-size: 10px !important;
+    padding: 2px 8px !important;
+}
+
+.tag-cloud__item--sm {
+    font-size: 12px !important;
+    padding: 3px 10px !important;
+}
+
+.tag-cloud__item--md {
+    font-size: 14px !important;
+    padding: 4px 12px !important;
+}
+
+.tag-cloud__item--lg {
+    font-size: 16px !important;
+    padding: 6px 14px !important;
+}
+
+.tag-cloud__item--xl {
+    font-size: 20px !important;
+    padding: 8px 18px !important;
 }
 
 @media (max-width: 991.98px) {
