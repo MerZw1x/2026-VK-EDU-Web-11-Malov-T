@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Вход</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/img/android-chrome-512x512.png">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <img class="logo__icon" src="static/img/android-chrome-512x512.png" alt="">
+                    <span class="logo__text">404</span>
+                    <span class="logo__slogan">Вопросы и ответы</span>
+                </a>
+                <div class="header__actions">
+                    <form action="#" class="search" role="search">
+                        <input type="search" name="q" class="form-control search__input" placeholder="Поиск..."
+                            aria-label="Поиск вопросов">
+                    </form>
+                    <a href="ask.html" class="btn btn-neon">Задать вопрос</a>
+                </div>
+                <div class="userblock userblock--guest">
+                    <a href="login.html" class="userblock__link">Войти</a>
+                    <a href="signup.html" class="userblock__link">Регистрация</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <div class="row g-4">
+                <div class="col-lg-9">
+                    <section class="page">
+                        <div class="page__head">
+                            <h1 class="page__title">Вход</h1>
+                        </div>
+                        <section class="card form auth-form">
+                            <div class="card-body">
+                                <form action="#" method="post">
+                                    <div class="alert alert-danger form__alert" role="alert">Неверный логин или пароль</div>
+                                    <div class="row mb-3">
+                                        <label for="login-username" class="col-md-3 col-form-label form__label">Логин</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="login-username" name="username" value="malov" autocomplete="username" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="login-password" class="col-md-3 col-form-label form__label">Пароль</label>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" id="login-password" name="password" autocomplete="current-password" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-9 offset-md-3 form__actions">
+                                            <button type="submit" class="btn btn-neon">Войти</button>
+                                            <a href="signup.html" class="form__link">Нет аккаунта? Регистрация</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+
+                <aside class="col-lg-3">
+                    <section class="card widget mb-4">
+                        <div class="card-body">
+                            <h2 class="widget__title">Популярные теги</h2>
+                            <div class="tag-cloud">
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--xl">Golang</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--lg">Gin</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--lg">Fiber</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--md">Goose</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--md">PostgreSQL</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--md">Fx</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--sm">RabbitMQ</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--sm">Docker</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--xs">Kubernetes</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--xs">Kafka</a>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card widget">
+                        <div class="card-body">
+                            <h2 class="widget__title">Лучшие пользователи</h2>
+                            <ol class="members">
+                                <li class="members__item">
+                                    <span class="members__rank">#1</span>
+                                    <a href="#" class="members__link">Малов Тимофей</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#2</span>
+                                    <a href="#" class="members__link">Баскаков Петр</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#3</span>
+                                    <a href="#" class="members__link">Дрись Алексей</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#4</span>
+                                    <a href="#" class="members__link">Мистулов Артур</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#5</span>
+                                    <a href="#" class="members__link">Барабульгов Алим</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <span>© 404, 2026</span>
+                <span class="footer__code">418 I'm a teapot</span>
+            </div>
+        </div>
+    </footer>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
