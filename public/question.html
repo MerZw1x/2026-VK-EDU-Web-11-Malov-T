@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Почему запись в закрытый канал вызывает панику?</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/img/android-chrome-512x512.png">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="index.html" class="logo">
+                    <img class="logo__icon" src="static/img/android-chrome-512x512.png" alt="">
+                    <span class="logo__text">404</span>
+                    <span class="logo__slogan">Вопросы и ответы</span>
+                </a>
+                <div class="header__actions">
+                    <form action="#" class="search" role="search">
+                        <input type="search" name="q" class="form-control search__input" placeholder="Поиск..."
+                            aria-label="Поиск вопросов">
+                    </form>
+                    <a href="ask.html" class="btn btn-neon">Задать вопрос</a>
+                </div>
+                <div class="userblock userblock--guest">
+                    <a href="login.html" class="userblock__link">Войти</a>
+                    <a href="signup.html" class="userblock__link">Регистрация</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <div class="row g-4">
+                <div class="col-lg-9">
+                    <section class="page">
+                        <article class="card question-card question-card--full mb-4">
+                            <div class="card-body question-card__body">
+                                <div class="question-card__aside">
+                                    <img class="question-card__avatar" src="static/img/avatars/kotik-akula.webp"
+                                        alt="Аватар">
+                                    <div class="vote vote--disliked">
+                                        <button type="button" class="vote__btn vote__btn--up" aria-label="Нравится"
+                                            aria-pressed="false">▲</button>
+                                        <span class="vote__count">25</span>
+                                        <button type="button" class="vote__btn vote__btn--down" aria-label="Не нравится"
+                                            aria-pressed="true">▼</button>
+                                    </div>
+                                </div>
+                                <div class="question-card__main">
+                                    <h1 class="question-card__title">Почему запись в закрытый канал вызывает панику, а
+                                        чтение из него - нет?</h1>
+                                    <p class="question-card__text">Всем привет! Разбираюсь с каналами. Почему при
+                                        попытке отправить данные в закрытый канал (ch &lt;- val) программа падает с
+                                        panic: send on closed channel, а если просто читать из закрытого канала, то мы
+                                        получаем нулевые значения и ok == false? Почему дизайнеры языка сделали такую
+                                        асимметрию?</p>
+                                    <div class="question-card__footer">
+                                        <a href="#answers" class="question-card__answers">Ответы (5)</a>
+                                        <div class="tags">
+                                            <a href="tag.html" class="tags__item">golang</a>
+                                            <a href="tag.html" class="tags__item">channels</a>
+                                            <a href="tag.html" class="tags__item">concurrency</a>
+                                        </div>
+                                        <time class="question-card__time" datetime="2026-10-26T09:15">2 часа
+                                            назад</time>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <section class="answers" id="answers">
+                            <h2 class="answers__title">Ответы (5)</h2>
+                            <article class="card answer-card answer-card--correct mb-3">
+                                <div class="card-body answer-card__body">
+                                    <div class="answer-card__aside">
+                                        <img class="answer-card__avatar" src="static/img/avatars/milyj-kotik.webp" alt="Аватар">
+                                        <div class="vote vote--liked">
+                                            <button type="button" class="vote__btn vote__btn--up" aria-label="Нравится"
+                                                aria-pressed="true">▲</button>
+                                            <span class="vote__count">42</span>
+                                            <button type="button" class="vote__btn vote__btn--down" aria-label="Не нравится"
+                                                aria-pressed="false">▼</button>
+                                        </div>
+                                    </div>
+                                    <div class="answer-card__main">
+                                        <p class="answer-card__text">Это сделано намеренно. Закрытие канала — сигнал читателям, что данных больше не будет, поэтому чтение безопасно и возвращает нулевое значение с ok == false. А запись в закрытый канал — всегда ошибка логики программы: отправитель не должен продолжать писать после close. Поэтому Go падает сразу, а не теряет данные молча.</p>
+                                        <div class="answer-card__footer">
+                                            <div class="form-check answer-card__correct">
+                                                <input class="form-check-input" type="checkbox" id="answer-correct-1" checked>
+                                                <label class="form-check-label" for="answer-correct-1">Правильный ответ</label>
+                                            </div>
+                                            <span class="answer-card__author">Баскаков Петр</span>
+                                            <time class="answer-card__time" datetime="2026-10-26T10:02">1 час назад</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="card answer-card mb-3">
+                                <div class="card-body answer-card__body">
+                                    <div class="answer-card__aside">
+                                        <img class="answer-card__avatar" src="static/img/avatars/kotik-zajka.webp" alt="Аватар">
+                                        <div class="vote">
+                                            <button type="button" class="vote__btn vote__btn--up" aria-label="Нравится"
+                                                aria-pressed="false">▲</button>
+                                            <span class="vote__count">7</span>
+                                            <button type="button" class="vote__btn vote__btn--down" aria-label="Не нравится"
+                                                aria-pressed="false">▼</button>
+                                        </div>
+                                    </div>
+                                    <div class="answer-card__main">
+                                        <p class="answer-card__text">Правило простое: закрывает канал только отправитель и только один раз. Если отправителей несколько — используйте sync.WaitGroup и закрывайте канал в отдельной горутине после wg.Wait().</p>
+                                        <div class="answer-card__footer">
+                                            <div class="form-check answer-card__correct">
+                                                <input class="form-check-input" type="checkbox" id="answer-correct-2">
+                                                <label class="form-check-label" for="answer-correct-2">Правильный ответ</label>
+                                            </div>
+                                            <span class="answer-card__author">Дрись Алексей</span>
+                                            <time class="answer-card__time" datetime="2026-10-26T10:20">50 минут назад</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="card answer-card mb-3">
+                                <div class="card-body answer-card__body">
+                                    <div class="answer-card__aside">
+                                        <img class="answer-card__avatar" src="static/img/avatars/kotik-banan.jpg" alt="Аватар">
+                                        <div class="vote vote--disliked">
+                                            <button type="button" class="vote__btn vote__btn--up" aria-label="Нравится"
+                                                aria-pressed="false">▲</button>
+                                            <span class="vote__count">-2</span>
+                                            <button type="button" class="vote__btn vote__btn--down" aria-label="Не нравится"
+                                                aria-pressed="true">▼</button>
+                                        </div>
+                                    </div>
+                                    <div class="answer-card__main">
+                                        <p class="answer-card__text">Можно обернуть запись в recover(), тогда паники не будет. Но это костыль — лучше исправить порядок закрытия.</p>
+                                        <div class="answer-card__footer">
+                                            <div class="form-check answer-card__correct">
+                                                <input class="form-check-input" type="checkbox" id="answer-correct-3">
+                                                <label class="form-check-label" for="answer-correct-3">Правильный ответ</label>
+                                            </div>
+                                            <span class="answer-card__author">Малов Тимофей</span>
+                                            <time class="answer-card__time" datetime="2026-10-26T10:45">25 минут назад</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            <nav aria-label="Страницы ответов">
+                                <ul class="pagination justify-content-center mt-4">
+                                    <li class="page-item disabled">
+                                        <span class="page-link" aria-label="Предыдущая">‹</span>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="question.html" aria-current="page">1</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">3</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Следующая">›</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </section>
+                        <section class="card answer-form mt-4">
+                            <div class="card-body">
+                                <h2 class="answer-form__title">Ваш ответ</h2>
+                                <form action="#" method="post">
+                                    <div class="mb-3">
+                                        <label for="answer-text" class="form-label visually-hidden">Текст ответа</label>
+                                        <textarea class="form-control answer-form__textarea" id="answer-text" name="text"
+                                            rows="6" placeholder="Напишите ваш ответ..." aria-describedby="answer-help"
+                                            required></textarea>
+                                        <div id="answer-help" class="form-text">Опишите решение подробно, код оформляйте отдельным блоком.</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-neon">Ответить</button>
+                                </form>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+
+                <aside class="col-lg-3">
+                    <section class="card widget mb-4">
+                        <div class="card-body">
+                            <h2 class="widget__title">Популярные теги</h2>
+                            <div class="tag-cloud">
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--xl">Golang</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--lg">Gin</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--lg">Fiber</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--md">Goose</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--md">PostgreSQL</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--md">Fx</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--sm">RabbitMQ</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--sm">Docker</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--xs">Kubernetes</a>
+                                <a href="tag.html" class="tag-cloud__item tag-cloud__item--xs">Kafka</a>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card widget">
+                        <div class="card-body">
+                            <h2 class="widget__title">Лучшие пользователи</h2>
+                            <ol class="members">
+                                <li class="members__item">
+                                    <span class="members__rank">#1</span>
+                                    <a href="#" class="members__link">Малов Тимофей</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#2</span>
+                                    <a href="#" class="members__link">Баскаков Петр</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#3</span>
+                                    <a href="#" class="members__link">Дрись Алексей</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#4</span>
+                                    <a href="#" class="members__link">Мистулов Артур</a>
+                                </li>
+                                <li class="members__item">
+                                    <span class="members__rank">#5</span>
+                                    <a href="#" class="members__link">Барабульгов Алим</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <span>© 404, 2026</span>
+                <span class="footer__code">418 I'm a teapot</span>
+            </div>
+        </div>
+    </footer>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
