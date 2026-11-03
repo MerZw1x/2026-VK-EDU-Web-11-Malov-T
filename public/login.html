@@ -15,7 +15,6 @@
         <div class="container">
             <div class="header__inner">
                 <a href="index.html" class="logo">
-                    <img class="logo__icon" src="static/img/android-chrome-512x512.png" alt="">
                     <span class="logo__text">404</span>
                     <span class="logo__slogan">Вопросы и ответы</span>
                 </a>
@@ -49,13 +48,15 @@
                                     <div class="row mb-3">
                                         <label for="login-username" class="col-md-3 col-form-label form__label">Логин</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" id="login-username" name="username" value="malov" autocomplete="username" required>
+                                            <input type="text" class="form-control" id="login-username" name="username" value="malov" autocomplete="username" required minlength="3" maxlength="30" aria-describedby="login-username-help">
+                                            <div id="login-username-help" class="form-text">От 3 до 30 символов.</div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="login-password" class="col-md-3 col-form-label form__label">Пароль</label>
                                         <div class="col-md-9">
-                                            <input type="password" class="form-control" id="login-password" name="password" autocomplete="current-password" required>
+                                            <input type="password" class="form-control" id="login-password" name="password" autocomplete="current-password" required maxlength="128" aria-describedby="login-password-help">
+                                            <div id="login-password-help" class="form-text">Введите пароль аккаунта, до 128 символов.</div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -124,7 +125,6 @@
         <div class="container">
             <div class="footer__inner">
                 <span>© 404, 2026</span>
-                <span class="footer__code">418 I'm a teapot</span>
             </div>
         </div>
     </footer>

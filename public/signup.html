@@ -15,7 +15,6 @@
         <div class="container">
             <div class="header__inner">
                 <a href="index.html" class="logo">
-                    <img class="logo__icon" src="static/img/android-chrome-512x512.png" alt="">
                     <span class="logo__text">404</span>
                     <span class="logo__slogan">Вопросы и ответы</span>
                 </a>
@@ -45,45 +44,48 @@
                         <section class="card form auth-form">
                             <div class="card-body">
                                 <form action="#" method="post" enctype="multipart/form-data">
+                                    <div class="alert alert-danger form__alert" role="alert">Не удалось создать аккаунт. Исправьте ошибки в полях ниже.</div>
                                     <div class="row mb-3">
                                         <label for="signup-username" class="col-md-3 col-form-label form__label">Логин</label>
                                         <div class="col-md-9">
                                             <input type="text" class="form-control is-invalid" id="signup-username" name="username" value="malov"
-                                                autocomplete="username" aria-describedby="signup-username-error" required>
+                                                autocomplete="username" aria-describedby="signup-username-error signup-username-help" required minlength="3" maxlength="30" aria-invalid="true">
+                                            <div id="signup-username-help" class="form-text">От 3 до 30 символов.</div>
                                             <div id="signup-username-error" class="invalid-feedback">Этот логин уже занят</div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="signup-email" class="col-md-3 col-form-label form__label">Email</label>
                                         <div class="col-md-9">
-                                            <input type="email" class="form-control" id="signup-email" name="email" placeholder="name@example.com" autocomplete="email" required>
+                                            <input type="email" class="form-control" id="signup-email" name="email" placeholder="name@example.com" autocomplete="email" required maxlength="254">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="signup-nickname" class="col-md-3 col-form-label form__label">Никнейм</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" id="signup-nickname" name="nickname" aria-describedby="signup-nickname-help" required>
-                                            <div id="signup-nickname-help" class="form-text">Так вас будут видеть другие пользователи.</div>
+                                            <input type="text" class="form-control" id="signup-nickname" name="nickname" aria-describedby="signup-nickname-help" required maxlength="40">
+                                            <div id="signup-nickname-help" class="form-text">До 40 символов. Так вас будут видеть другие пользователи.</div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="signup-password" class="col-md-3 col-form-label form__label">Пароль</label>
                                         <div class="col-md-9">
                                             <input type="password" class="form-control" id="signup-password" name="password" minlength="8"
-                                                autocomplete="new-password" aria-describedby="signup-password-help" required>
-                                            <div id="signup-password-help" class="form-text">Не меньше 8 символов.</div>
+                                                autocomplete="new-password" aria-describedby="signup-password-help" required maxlength="128">
+                                            <div id="signup-password-help" class="form-text">От 8 до 128 символов.</div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="signup-password-repeat" class="col-md-3 col-form-label form__label">Повторите пароль</label>
                                         <div class="col-md-9">
-                                            <input type="password" class="form-control" id="signup-password-repeat" name="password_repeat" autocomplete="new-password" required>
+                                            <input type="password" class="form-control" id="signup-password-repeat" name="password_repeat" autocomplete="new-password" required maxlength="128">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="signup-avatar" class="col-md-3 col-form-label form__label">Аватар</label>
                                         <div class="col-md-9">
-                                            <input type="file" class="form-control" id="signup-avatar" name="avatar" accept="image/*">
+                                            <input type="file" class="form-control" id="signup-avatar" name="avatar" accept="image/jpeg,image/png,image/webp" aria-describedby="signup-avatar-help">
+                                            <div id="signup-avatar-help" class="form-text">JPEG, PNG или WebP, не больше 2 МБ.</div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -152,7 +154,6 @@
         <div class="container">
             <div class="footer__inner">
                 <span>© 404, 2026</span>
-                <span class="footer__code">418 I'm a teapot</span>
             </div>
         </div>
     </footer>
