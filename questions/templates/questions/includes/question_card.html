@@ -1,0 +1,25 @@
+{% load static %}
+
+<article class="card question-card mb-3">
+    <div class="card-body question-card__body">
+        <div class="question-card__aside">
+            <img class="question-card__avatar" src="{% static question.avatar %}" alt="Аватар">
+            {% include "questions/includes/vote.html" with score=question.score vote_state=question.vote_state only %}
+        </div>
+        <div class="question-card__main">
+            <h2 class="question-card__title">
+                <a href="{% url 'questions:detail' question.id %}" class="question-card__link">{{ question.title }}</a>
+            </h2>
+            <p class="question-card__text">{{ question.text }}</p>
+            <div class="question-card__footer">
+                <a href="{% url 'questions:detail' question.id %}#answers" class="question-card__answers">Ответы ({{ question.answers_count }})</a>
+                <div class="tags">
+                    {% for tag in question.tags %}
+                        <a href="{% url 'questions:tag' tag %}" class="tags__item">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+                <time class="question-card__time" datetime="{{ question.created_at }}">{{ question.time_label }}</time>
+            </div>
+        </div>
+    </div>
+</article>

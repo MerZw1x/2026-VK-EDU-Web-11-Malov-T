@@ -9,3 +9,5 @@ venv/
 .venv/
 node_modules/
 .env
+/static/
+/media/

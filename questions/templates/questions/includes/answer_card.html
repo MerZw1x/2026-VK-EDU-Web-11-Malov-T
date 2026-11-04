@@ -1,0 +1,21 @@
+{% load static %}
+
+<article class="card answer-card {% if answer.is_correct %}answer-card--correct{% endif %} mb-3">
+    <div class="card-body answer-card__body">
+        <div class="answer-card__aside">
+            <img class="answer-card__avatar" src="{% static answer.avatar %}" alt="Аватар">
+            {% include "questions/includes/vote.html" with score=answer.score vote_state=answer.vote_state only %}
+        </div>
+        <div class="answer-card__main">
+            <p class="answer-card__text">{{ answer.text }}</p>
+            <div class="answer-card__footer">
+                <div class="form-check answer-card__correct">
+                    <input class="form-check-input" type="checkbox" id="answer-correct-{{ answer.id }}" {% if answer.is_correct %}checked{% endif %}>
+                    <label class="form-check-label" for="answer-correct-{{ answer.id }}">Правильный ответ</label>
+                </div>
+                <span class="answer-card__author">{{ answer.author }}</span>
+            <time class="answer-card__time" datetime="{{ answer.created_at }}">{{ answer.time_label }}</time>
+            </div>
+        </div>
+    </div>
+</article>
