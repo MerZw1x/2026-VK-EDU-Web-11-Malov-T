@@ -1,0 +1,5 @@
+<div class="vote{% if vote_state %} vote--{{ vote_state }}{% endif %}">
+                        <button type="button" class="vote__btn vote__btn--up" aria-label="Нравится" aria-pressed="{% if vote_state == 'liked' %}true{% else %}false{% endif %}">▲</button>
+                        <span class="vote__count">{{ score }}</span>
+                        <button type="button" class="vote__btn vote__btn--down" aria-label="Не нравится" aria-pressed="{% if vote_state == 'disliked' %}true{% else %}false{% endif %}">▼</button>
+                    </div>

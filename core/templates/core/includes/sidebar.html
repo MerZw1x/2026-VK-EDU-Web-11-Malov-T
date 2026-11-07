@@ -1,0 +1,50 @@
+<aside class="col-lg-3">
+    <section class="card widget mb-4">
+        <div class="card-body">
+            <h2 class="widget__title">
+                Популярные теги
+            </h2>
+            <div class="tag-cloud">
+                <a href="{% url 'questions:tag' 'golang' %}" class="tag-cloud__item tag-cloud__item--xl">Golang</a>
+                <a href="{% url 'questions:tag' 'gin' %}" class="tag-cloud__item tag-cloud__item--lg">Gin</a>
+                <a href="{% url 'questions:tag' 'fiber' %}" class="tag-cloud__item tag-cloud__item--lg">Fiber</a>
+                <a href="{% url 'questions:tag' 'goose' %}" class="tag-cloud__item tag-cloud__item--md">Goose</a>
+                <a href="{% url 'questions:tag' 'postgresql' %}" class="tag-cloud__item tag-cloud__item--md">PostgreSQL</a>
+                <a href="{% url 'questions:tag' 'fx' %}" class="tag-cloud__item tag-cloud__item--md">Fx</a>
+                <a href="{% url 'questions:tag' 'rabbitmq' %}" class="tag-cloud__item tag-cloud__item--sm">RabbitMQ</a>
+                <a href="{% url 'questions:tag' 'docker' %}" class="tag-cloud__item tag-cloud__item--sm">Docker</a>
+                <a href="{% url 'questions:tag' 'kubernetes' %}" class="tag-cloud__item tag-cloud__item--xs">Kubernetes</a>
+                <a href="{% url 'questions:tag' 'kafka' %}" class="tag-cloud__item tag-cloud__item--xs">Kafka</a>
+            </div>
+        </div>
+    </section>
+    <section class="card widget">
+        <div class="card-body">
+            <h2 class="widget__title">
+                Лучшие пользователи
+            </h2>
+            <ol class="members">
+                <li class="members__item">
+                    <span class="members__rank">#1</span>
+                    <a href="#" class="members__link">Малов Тимофей</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#2</span>
+                    <a href="#" class="members__link">Баскаков Петр</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#3</span>
+                    <a href="#" class="members__link">Дрись Алексей</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#4</span>
+                    <a href="#" class="members__link">Мистулов Артур</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#5</span>
+                    <a href="#" class="members__link">Барабульгов Алим</a>
+                </li>
+            </ol>
+        </div>
+    </section>
+</aside>

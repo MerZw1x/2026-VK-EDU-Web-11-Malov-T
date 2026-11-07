@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="page__head">
+        <h1 class="page__title">Вход</h1>
+    </div>
+    <section class="card form auth-form">
+        <div class="card-body">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <div class="alert alert-danger form__alert" role="alert">Неверный логин или пароль</div>
+                <div class="row mb-3">
+                    <label for="login-username" class="col-md-3 col-form-label form__label">Логин</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="login-username" name="username" value="malov" autocomplete="username" required minlength="3" maxlength="30" aria-describedby="login-username-help">
+                        <div id="login-username-help" class="form-text">От 3 до 30 символов.</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="login-password" class="col-md-3 col-form-label form__label">Пароль</label>
+                    <div class="col-md-9">
+                        <input type="password" class="form-control" id="login-password" name="password" autocomplete="current-password" required maxlength="128" aria-describedby="login-password-help">
+                        <div id="login-password-help" class="form-text">Введите пароль аккаунта, до 128 символов.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 offset-md-3 form__actions">
+                        <button type="submit" class="btn btn-neon">Войти</button>
+                        <a href="{% url 'core:signup' %}" class="form__link">Нет аккаунта? Регистрация</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>
+{% endblock %}

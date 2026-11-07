@@ -1,0 +1,56 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ question.title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <article class="card question-card question-card--full mb-4">
+        <div class="card-body question-card__body">
+            <div class="question-card__aside">
+                <img class="question-card__avatar" src="{% static question.avatar %}"
+                    alt="Аватар">
+                {% include "questions/includes/vote.html" with score=question.score vote_state=question.vote_state only %}
+            </div>
+            <div class="question-card__main">
+                <h1 class="question-card__title">{{ question.title }}</h1>
+                <p class="question-card__text">{{ question.text }}</p>
+                <div class="question-card__footer">
+                    <a href="#answers" class="question-card__answers">Ответы ({{ answers_count }})</a>
+                    <div class="tags">
+                        {% for tag in question.tags %}
+                        <a href="{% url 'questions:tag' tag %}" class="tags__item">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                    <time class="question-card__time" datetime="{{ question.created_at }}">{{ question.time_label }}</time>
+                </div>
+            </div>
+        </div>
+    </article>
+    <section class="answers" id="answers">
+        <h2 class="answers__title">Ответы ({{ answers_count }})</h2>
+        {% for answer in answers %}
+        {% include "questions/includes/answer_card.html" with answer=answer only %}
+        {% empty %}
+            <p>На этот вопрос пока никто не ответил.</p>
+        {% endfor %}
+        {% include "questions/includes/pagination.html" with pagination_label="Страницы ответов" %}
+    </section>
+    <section class="card answer-form mt-4">
+        <div class="card-body">
+            <h2 class="answer-form__title">Ваш ответ</h2>
+            <form action="#" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="answer-text" class="form-label visually-hidden">Текст ответа</label>
+                    <textarea class="form-control answer-form__textarea" id="answer-text" name="text"
+                        rows="6" placeholder="Напишите ваш ответ..." aria-describedby="answer-help"
+                        required></textarea>
+                    <div id="answer-help" class="form-text">Опишите решение подробно, код оформляйте отдельным блоком.</div>
+                </div>
+                <button type="submit" class="btn btn-neon">Ответить</button>
+            </form>
+        </div>
+    </section>
+</section>
+{% endblock %}
