@@ -4,14 +4,13 @@
 
 ## ДЗ 1 — статическая вёрстка
 
-Список новых вопросов - `public/index.html` 
-Вопрос с ответами - `public/question.html` 
-Задать вопрос - `public/ask.html` 
-Вход - `public/login.html` 
-Регистрация - `public/signup.html` 
-Настройки профиля - `public/profile.html` 
-Базовый шаблон - `public/base.html` 
-
+- Список новых вопросов — `public/index.html`
+- Вопрос с ответами — `public/question.html`
+- Задать вопрос — `public/ask.html`
+- Вход — `public/login.html`
+- Регистрация — `public/signup.html`
+- Настройки профиля — `public/profile.html`
+- Базовый шаблон — `public/base.html`
 
 ## Как открыть вёрстку
 
