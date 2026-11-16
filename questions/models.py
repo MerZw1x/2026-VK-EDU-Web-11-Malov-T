@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
+from .manager import QuestionManager, AnswerManager
 
 # Create your models here.
 class Tag(models.Model):
@@ -34,6 +36,8 @@ class Question(models.Model):
         verbose_name="Теги"
     )
 
+    objects = QuestionManager()
+
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
@@ -46,6 +50,10 @@ class Question(models.Model):
     
     def __str__(self):
         return f"Вопрос #{self.id}; Заголовок: {self.title}"
+
+    def get_absolute_url(self):
+        return reverse("questions:detail", kwargs={"question_id": self.pk})
+
 
 class Answer(models.Model):
     author = models.ForeignKey (
@@ -68,6 +76,8 @@ class Answer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     rating = models.IntegerField(default=0, verbose_name="Рейтинг")
     is_correct = models.BooleanField("Правильный ответ", default=False)
+
+    objects = AnswerManager()
 
     class Meta:
         verbose_name = "Ответ"
