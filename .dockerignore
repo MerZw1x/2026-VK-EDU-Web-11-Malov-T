@@ -9,5 +9,6 @@ venv
 *.sqlite3
 *.log
 .env
+.env.*
 /static
 /media
