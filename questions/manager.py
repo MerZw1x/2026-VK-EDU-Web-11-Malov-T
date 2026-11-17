@@ -1,6 +1,17 @@
 from django.db import models
 
 
+class TagQuerySet(models.QuerySet):
+    def popular(self):
+        return self.annotate(questions_count=models.Count("questions")).order_by(
+            "-questions_count", "id",
+        )
+
+
+class TagManager(models.Manager.from_queryset(TagQuerySet)):
+    pass
+
+
 class QuestionQuerySet(models.QuerySet):
     def new(self):
         return self.order_by("-created_at", "-id")

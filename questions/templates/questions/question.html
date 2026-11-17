@@ -1,16 +1,14 @@
 {% extends "core/base.html" %}
-{% load static %}
 
-{% block title %}{{ question.title }} — 404{% endblock %}
+{% block title %}{{ question.title }}{% endblock %}
 
 {% block content %}
 <section class="page">
     <article class="card question-card question-card--full mb-4">
         <div class="card-body question-card__body">
             <div class="question-card__aside">
-                <img class="question-card__avatar" src="{% static question.avatar %}"
-                    alt="Аватар">
-                {% include "questions/includes/vote.html" with score=question.score vote_state=question.vote_state only %}
+                {% include "core/includes/avatar.html" with user=question.author css_class="question-card__avatar" only %}
+                {% include "questions/includes/vote.html" with score=question.rating vote_state="" only %}
             </div>
             <div class="question-card__main">
                 <h1 class="question-card__title">{{ question.title }}</h1>
@@ -18,24 +16,33 @@
                 <div class="question-card__footer">
                     <a href="#answers" class="question-card__answers">Ответы ({{ answers_count }})</a>
                     <div class="tags">
-                        {% for tag in question.tags %}
-                        <a href="{% url 'questions:tag' tag %}" class="tags__item">{{ tag }}</a>
+                        {% for tag in question.tags.all %}
+                            <a href="{% url 'questions:tag' tag.slug %}" class="tags__item">{{ tag.name }}</a>
                         {% endfor %}
                     </div>
-                    <time class="question-card__time" datetime="{{ question.created_at }}">{{ question.time_label }}</time>
+                    <time class="question-card__time" datetime="{{ question.created_at|date:'c' }}">
+                        {{ question.created_at|date:"d E Y, H:i" }}
+                    </time>
+                    {% if question.author %}
+                        <span class="question-card__author">{{ question.author.username }}</span>
+                    {% else %}
+                        <span class="question-card__author">Пользователь удалён</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </article>
+
     <section class="answers" id="answers">
         <h2 class="answers__title">Ответы ({{ answers_count }})</h2>
         {% for answer in answers %}
-        {% include "questions/includes/answer_card.html" with answer=answer only %}
+            {% include "questions/includes/answer_card.html" with answer=answer only %}
         {% empty %}
             <p>На этот вопрос пока никто не ответил.</p>
         {% endfor %}
         {% include "questions/includes/pagination.html" with pagination_label="Страницы ответов" %}
     </section>
+
     <section class="card answer-form mt-4">
         <div class="card-body">
             <h2 class="answer-form__title">Ваш ответ</h2>

@@ -2,13 +2,14 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
-from .manager import AnswerManager, QuestionManager
+from .manager import AnswerManager, QuestionManager, TagManager
 
 
 # Create your models here.
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Название")
     slug = models.SlugField(max_length=50, unique=True, verbose_name="Код для URL")
+    objects = TagManager()
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"

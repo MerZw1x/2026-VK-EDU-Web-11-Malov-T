@@ -1,16 +1,16 @@
 # 2026-VK-EDU-Web-11-Malov-T
 
-**404** — сервис вопросов и ответов
+**404** - сервис вопросов и ответов
 
-## ДЗ 1 — статическая вёрстка
+## ДЗ 1 - статическая вёрстка
 
-- Список новых вопросов — `public/index.html`
-- Вопрос с ответами — `public/question.html`
-- Задать вопрос — `public/ask.html`
-- Вход — `public/login.html`
-- Регистрация — `public/signup.html`
-- Настройки профиля — `public/profile.html`
-- Базовый шаблон — `public/base.html`
+- Список новых вопросов - `public/index.html`
+- Вопрос с ответами - `public/question.html`
+- Задать вопрос - `public/ask.html`
+- Вход - `public/login.html`
+- Регистрация - `public/signup.html`
+- Настройки профиля - `public/profile.html`
+- Базовый шаблон - `public/base.html`
 
 ## Как открыть вёрстку
 
@@ -18,43 +18,78 @@
 
 Через Live Server: откройте папку проекта в VS Code, установите расширение **Live Server**, нажмите правой кнопкой на `public/index.html` и выберите **Open with Live Server**.
 
-Альтернатива — из корня проекта выполнить `python3 -m http.server 8000 --directory public` и открыть http://localhost:8000/.
+Альтернатива - из корня проекта выполнить `python3 -m http.server 8000 --directory public` и открыть http://localhost:8000/.
 
-## ДЗ 2 — Django
+## ДЗ 2 и ДЗ 3 - Django и PostgreSQL
 
-Восемь страниц доступны через Django. Вопросы и ответы пока хранятся в заглушках, а списки разбиваются на страницы. Вход, регистрация, профиль и отправка форм демонстрируют вёрстку.
+Сайт работает с PostgreSQL 16. Типовые выборки находятся в QuerySet/Manager,
+вопросы и ответы пагинируются; повторные голоса ограничены на уровне БД.
+Формы входа, регистрации, профиля, создания вопроса и ответа пока демонстрируют
+вёрстку: это read-only версия. Редактирование данных доступно в админке.
+
+| Адрес | Страница |
+|---|---|
+| `/` | Новые вопросы |
+| `/hot/` | Лучшие вопросы |
+| `/tag/<slug>/` | Вопросы по существующему тегу |
+| `/question/<id>/` | Вопрос с ответами |
+| `/ask/`, `/login/`, `/signup/`, `/profile/` | Формы |
+| `/admin/` | Административная панель |
+
+### Подготовка настроек
+
+Нужны Python 3.12 и запущенный Docker Desktop с Docker Compose.
+
+```bash
+cp -n .env.local.example .env.local
+cp -n .env.docker.example .env.docker
+```
 
 ### Локальный запуск
 
-Из корня репозитория, с Python 3.12:
+Из корня репозитория:
 
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-cp -n .env.example .env
+docker compose --env-file .env.docker up -d --wait db
 set -a
-source ./.env
+source ./.env.local
 set +a
 python manage.py migrate
 python manage.py runserver
 ```
 
-Откройте http://127.0.0.1:8000/. Команда `source ./.env` экспортирует настройки при включённом `set -a`: Django читает переменные окружения, а сам файл автоматически не загружает. Без файла проект также запускается с локальными настройками по умолчанию.
-
 ### Запуск через Docker Compose
 
-С запущенным Docker Desktop, из корня репозитория:
+После подготовки `.env.docker`:
 
 ```bash
-cp -n .env.example .env
-docker compose up --build
+docker compose --env-file .env.docker up --build
 ```
 
-Откройте http://localhost:8000/. Compose читает `.env`, применяет миграции и запускает сервер на порту 8000. Код подключён из рабочей папки, а `media/` хранится в отдельном томе. Если локальный Django уже занял порт 8000, остановите его перед запуском Compose.
+### Администратор
 
+Локально, после загрузки окружения:
 
-## ДЗ 3 - БД
+```bash
+python manage.py createsuperuser
+```
 
-### Схема бд 
+Войдите на `/admin/`
+
+### Наполнение БД
+
+Локально:
+
+```bash
+python manage.py fill_db 2
+python manage.py fill_db 10000
+```
+
+Каждый запуск добавляет новую порцию, не удаляя прежние записи
+
+### Схема БД
+
 ![](docs/images/database-schema.png)

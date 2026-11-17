@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db import models
 from questions.models import Question, Tag, Answer, AnswerLike, QuestionLike
 
 # Register your models here.
@@ -6,7 +7,27 @@ class AnswerInline(admin.TabularInline):
     model = Answer
     extra = 0
     fields = ["author", "text", "is_correct"]
-    raw_id_fields = ["author"]    
+    readonly_fields = ["author"]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("author")
+
+class HasQuestionsFilter(admin.SimpleListFilter):
+    title = "Наличие вопросов"
+    parameter_name = "has_questions"
+
+    def lookups(self, request, model_admin):
+        return [("yes", "Есть вопросы"), ("no", "Нет вопросов")]
+
+    def queryset(self, request, queryset):
+        exists = models.Exists(
+            Question.tags.through.objects.filter(tag_id=models.OuterRef("pk"))
+        )
+        if self.value() == "yes":
+            return queryset.filter(exists)
+        if self.value() == "no":
+            return queryset.filter(~exists)
+        return queryset
 
 
 class QuestionAdmin(admin.ModelAdmin):
@@ -38,7 +59,7 @@ class TagAdmin(admin.ModelAdmin):
 
     search_fields = ["name", "slug"]
 
-    list_filter = ["name"]
+    list_filter = [HasQuestionsFilter]
 
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ["id", "question", "author", "is_correct", "rating"]
