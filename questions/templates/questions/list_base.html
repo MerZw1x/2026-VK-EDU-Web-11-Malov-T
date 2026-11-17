@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="page__head">
+        <h1 class="page__title">{{ title }}</h1>
+        {% block list_link %}{% endblock %}
+    </div>
+
+    {% block question_list %}
+        {% for question in questions %}
+            {% include "questions/includes/question_card.html" with question=question only %}
+        {% empty %}
+            <p>Вопросов пока нет.</p>
+        {% endfor %}
+    {% endblock %}
+
+    {% include "questions/includes/pagination.html" with pagination_label="Страницы вопросов" %}
+</section>
+{% endblock %}

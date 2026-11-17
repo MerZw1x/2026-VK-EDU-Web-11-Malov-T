@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="page__head">
+        <h1 class="page__title">Задать вопрос</h1>
+    </div>
+    <section class="card form ask-form">
+        <div class="card-body">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <div class="alert alert-danger form__alert" role="alert">Не удалось опубликовать вопрос. Исправьте ошибки в полях ниже.</div>
+                <div class="row mb-3">
+                    <label for="ask-title" class="col-md-3 col-form-label form__label">Заголовок</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="ask-title" name="title" maxlength="255"
+                            placeholder="Например: почему запись в закрытый канал вызывает панику?" aria-describedby="ask-title-help" required>
+                        <div id="ask-title-help" class="form-text">До 255 символов. Коротко и по сути — так вопрос быстрее найдут.</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="ask-text" class="col-md-3 col-form-label form__label">Текст</label>
+                    <div class="col-md-9">
+                        <textarea class="form-control ask-form__textarea" id="ask-text" name="text" rows="10"
+                            placeholder="Опишите проблему, что пробовали и что ожидали получить" required maxlength="10000" aria-describedby="ask-text-help"></textarea>
+                        <div id="ask-text-help" class="form-text">До 10 000 символов. Опишите проблему и что уже пробовали.</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="ask-tags" class="col-md-3 col-form-label form__label">Теги</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control is-invalid" id="ask-tags" name="tags" value="golang, channels, concurrency, panic"
+                            aria-describedby="ask-tags-help ask-tags-error" maxlength="100" aria-invalid="true">
+                        <div id="ask-tags-error" class="invalid-feedback">Можно указать не больше 3 тегов</div>
+                        <div id="ask-tags-help" class="form-text">Через запятую, не больше 3 тегов и 100 символов суммарно.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 offset-md-3 form__actions">
+                        <button type="submit" class="btn btn-neon">Спросить!</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>
+{% endblock %}

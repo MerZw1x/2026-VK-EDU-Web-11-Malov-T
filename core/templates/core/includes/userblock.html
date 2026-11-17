@@ -1,0 +1,19 @@
+{% load static %}
+
+{% if show_profile_user %}
+    <div class="userblock">
+        <img class="userblock__avatar rounded-circle" src="{% static 'img/avatars/kotik-banan.jpg' %}" alt="Аватарка">
+        <div class="userblock__info">
+            <span class="userblock__name">Малов Тимофей</span>
+            <div class="userblock__links">
+                <a href="{% url 'core:profile' %}" class="userblock__link">Настройки</a>
+                <a href="#" class="userblock__link">Выйти</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="userblock userblock--guest">
+        <a href="{% url 'core:login' %}" class="userblock__link">Войти</a>
+        <a href="{% url 'core:signup' %}" class="userblock__link">Регистрация</a>
+    </div>
+{% endif %}

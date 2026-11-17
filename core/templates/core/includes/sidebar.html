@@ -1,0 +1,46 @@
+<aside class="col-lg-3">
+    <section class="card widget mb-4">
+        <div class="card-body">
+            <h2 class="widget__title">
+                Популярные теги
+            </h2>
+            <div class="tag-cloud">
+                {% for tag in popular_tags %}
+                    <a href="{% url 'questions:tag' tag.slug %}"
+                       class="tag-cloud__item {% if forloop.counter <= 2 %}tag-cloud__item--xl{% elif forloop.counter <= 5 %}tag-cloud__item--md{% else %}tag-cloud__item--sm{% endif %}">{{ tag.name }}</a>
+                {% empty %}
+                    <p class="mb-0 text-body-secondary">Тегов пока нет.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section class="card widget">
+        <div class="card-body">
+            <h2 class="widget__title">
+                Лучшие пользователи
+            </h2>
+            <ol class="members">
+                <li class="members__item">
+                    <span class="members__rank">#1</span>
+                    <a href="#" class="members__link">Малов Тимофей</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#2</span>
+                    <a href="#" class="members__link">Баскаков Петр</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#3</span>
+                    <a href="#" class="members__link">Дрись Алексей</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#4</span>
+                    <a href="#" class="members__link">Мистулов Артур</a>
+                </li>
+                <li class="members__item">
+                    <span class="members__rank">#5</span>
+                    <a href="#" class="members__link">Барабульгов Алим</a>
+                </li>
+            </ol>
+        </div>
+    </section>
+</aside>

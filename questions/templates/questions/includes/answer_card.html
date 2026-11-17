@@ -1,0 +1,28 @@
+
+<article class="card answer-card {% if answer.is_correct %}answer-card--correct{% endif %} mb-3">
+    <div class="card-body answer-card__body">
+        <div class="answer-card__aside">
+            {% include "core/includes/avatar.html" with user=answer.author css_class="answer-card__avatar" only %}
+            {% include "questions/includes/vote.html" with score=answer.rating vote_state="" only %}
+        </div>
+        <div class="answer-card__main">
+            <p class="answer-card__text">{{ answer.text }}</p>
+            <div class="answer-card__footer">
+                <div class="form-check answer-card__correct">
+                    <input class="form-check-input" type="checkbox"
+                           id="answer-correct-{{ answer.id }}"
+                           {% if answer.is_correct %}checked{% endif %}>
+                    <label class="form-check-label" for="answer-correct-{{ answer.id }}">Правильный ответ</label>
+                </div>
+                {% if answer.author %}
+                    <span class="answer-card__author">{{ answer.author.username }}</span>
+                {% else %}
+                    <span class="answer-card__author">Пользователь удалён</span>
+                {% endif %}
+                <time class="answer-card__time" datetime="{{ answer.created_at|date:'c' }}">
+                    {{ answer.created_at|date:"d E Y, H:i" }}
+                </time>
+            </div>
+        </div>
+    </div>
+</article>

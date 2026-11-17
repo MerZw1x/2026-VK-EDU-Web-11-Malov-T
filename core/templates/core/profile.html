@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="page__head">
+        <h1 class="page__title">Настройки профиля</h1>
+    </div>
+    <section class="card form profile-form">
+        <div class="card-body">
+            <form action="#" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="alert alert-danger form__alert" role="alert">Не удалось сохранить профиль. Проверьте email.</div>
+                <div class="row mb-3">
+                    <label for="profile-username" class="col-md-3 col-form-label form__label">Логин</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="profile-username" name="username" value="malov" autocomplete="username" required minlength="3" maxlength="30" aria-describedby="profile-username-help">
+                        <div id="profile-username-help" class="form-text">От 3 до 30 символов.</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="profile-email" class="col-md-3 col-form-label form__label">Email</label>
+                    <div class="col-md-9">
+                        <input type="email" class="form-control is-invalid" id="profile-email" name="email" value="t.malov@" autocomplete="email" required maxlength="254" aria-invalid="true" aria-describedby="profile-email-error">
+                        <div id="profile-email-error" class="invalid-feedback">Введите корректный email, например name@example.com.</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="profile-nickname" class="col-md-3 col-form-label form__label">Никнейм</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="profile-nickname" name="nickname" value="Малов Тимофей" required maxlength="40" aria-describedby="profile-nickname-help">
+                        <div id="profile-nickname-help" class="form-text">До 40 символов. Так вас будут видеть другие пользователи.</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="profile-avatar" class="col-md-3 col-form-label form__label">Аватар</label>
+                    <div class="col-md-9 profile-form__avatar-field">
+                        <img class="profile-form__avatar rounded-circle" src="{% static 'img/avatars/kotik-banan.jpg' %}" alt="Текущий аватар">
+                        <input type="file" class="form-control" id="profile-avatar" name="avatar" accept="image/jpeg,image/png,image/webp" aria-describedby="profile-avatar-help">
+                        <div id="profile-avatar-help" class="form-text">JPEG, PNG или WebP, не больше 2 МБ.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 offset-md-3 form__actions">
+                        <button type="submit" class="btn btn-neon">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <a href="{% url 'questions:index' %}" class="logo">
+                <span class="logo__text">404</span>
+                <span class="logo__slogan">Вопросы и ответы</span>
+            </a>
+            <div class="header__actions">
+                <form action="#" class="search" role="search">
+                    <input type="search" name="q" class="form-control search__input" placeholder="Поиск..."
+                        aria-label="Поиск вопросов">
+                </form>
+                <a href="{% url 'questions:ask' %}" class="btn btn-neon">Задать вопрос</a>
+            </div>
+            {% include "core/includes/userblock.html" %}
+        </div>
+    </div>
+</header>

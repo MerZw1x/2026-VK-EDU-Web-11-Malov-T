@@ -1,0 +1,26 @@
+
+<article class="card question-card mb-3">
+    <div class="card-body question-card__body">
+        <div class="question-card__aside">
+            {% include "core/includes/avatar.html" with user=question.author css_class="question-card__avatar" only %}
+            {% include "questions/includes/vote.html" with score=question.rating vote_state="" only %}
+        </div>
+        <div class="question-card__main">
+            <h2 class="question-card__title">
+                <a href="{{ question.get_absolute_url }}" class="question-card__link">{{ question.title }}</a>
+            </h2>
+            <p class="question-card__text">{{ question.text }}</p>
+            <div class="question-card__footer">
+                <a href="{{ question.get_absolute_url }}#answers" class="question-card__answers">Ответы ({{ question.answers_count }})</a>
+                <div class="tags">
+                    {% for tag in question.tags.all %}
+                        <a href="{% url 'questions:tag' tag.slug %}" class="tags__item">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+                <time class="question-card__time" datetime="{{ question.created_at|date:'c' }}">
+                    {{ question.created_at|date:"d E Y, H:i" }}
+                </time>
+            </div>
+        </div>
+    </div>
+</article>

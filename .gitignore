@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+*.sqlite3
+venv/
+.venv/
+node_modules/
+.env
+.env.*
+!.env.example
+!.env.*.example
+/static/
+/media/
