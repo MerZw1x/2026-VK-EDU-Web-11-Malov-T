@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class QuestionQuerySet(models.QuerySet):
     def new(self):
         return self.order_by("-created_at", "-id")

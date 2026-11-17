@@ -1,7 +1,9 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.urls import reverse
-from .manager import QuestionManager, AnswerManager
+
+from .manager import AnswerManager, QuestionManager
+
 
 # Create your models here.
 class Tag(models.Model):
@@ -42,7 +44,7 @@ class Question(models.Model):
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
 
-        indexes = [
+        indexes = [  # noqa: RUF012
             models.Index(fields=["-created_at", "-id"], name="question_new_idx"),
             models.Index(fields=["-rating", "-id"], name="question_hot_idx"),
         ]
