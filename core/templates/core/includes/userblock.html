@@ -1,0 +1,23 @@
+{% load static %}
+
+{% if request.user.is_authenticated %}
+    <div class="userblock">
+        {% include "core/includes/avatar.html" with user=request.user css_class="userblock__avatar rounded-circle" only %}
+        <div class="userblock__info">
+            <span class="userblock__name">{{ request.user.username }}</span>
+            <div class="userblock__links">
+                <a href="{% url 'core:profile' %}" class="userblock__link">Настройки</a>
+                <form action="{% url 'core:logout' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="userblock__link">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="userblock userblock--guest">
+        <a href="{% url 'core:login' %}" class="userblock__link">Войти</a>
+        <a href="{% url 'core:signup' %}" class="userblock__link">Регистрация</a>
+    </div>
+{% endif %}

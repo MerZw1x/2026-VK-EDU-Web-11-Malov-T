@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="page__head">
+        <h1 class="page__title">Настройки профиля</h1>
+    </div>
+    <section class="card form profile-form">
+        <div class="card-body">
+            <form action="{% url 'core:profile' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-danger form__alert" role="alert">
+                        Не удалось сохранить профиль. Исправьте ошибки ниже.
+                    </div>
+                {% endif %}
+                {{ form.non_field_errors }}
+                <p class="form-control-plaintext">{{ request.user.username }}</p>
+                <div class="row mb-3">
+                    <label for="{{ form.email.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.email.label }}
+                    </label>
+                    <div class="col-md-9">
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+                </div>  
+                <div class="row mb-3">
+                    <label for="{{ form.nickname.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.nickname.label }}
+                    </label>
+                    <div class="col-md-9">
+                        {{ form.nickname }}
+                        {{ form.nickname.errors }}
+                        <div class="form-text">До 40 символов</div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="{{ form.avatar.id_for_label }}" class="col-md-3 col-form-label form__label">Аватар</label>
+                    <div class="col-md-9 profile-form__avatar-field">
+                        {% include "core/includes/avatar.html" with user=request.user css_class="profile-form__avatar rounded-circle" only %}
+                        {{ form.avatar }}
+                        {{ form.avatar.errors }}
+                        <div id="profile-avatar-help" class="form-text">JPEG, PNG или WebP, не больше 2 МБ.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 offset-md-3 form__actions">
+                        <button type="submit" class="btn btn-neon">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>
+{% endblock %}

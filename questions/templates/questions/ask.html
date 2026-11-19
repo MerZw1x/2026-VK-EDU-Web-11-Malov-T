@@ -1,0 +1,66 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ title }} — 404{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="page__head">
+        <h1 class="page__title">Задать вопрос</h1>
+    </div>
+    <section class="card form ask-form">
+        <div class="card-body">
+            <form action="{% url 'questions:ask' %}" method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-danger form__alert" role="alert">
+                        Не удалось опубликовать вопрос. Исправьте ошибки в полях ниже.
+                    </div>
+                {% endif %}
+                {{ form.non_field_errors }}
+                <div class="row mb-3">
+                    <label for="{{ form.title.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.title.label }}
+                    </label>
+                    <div class="col-md-9">
+                        {{ form.title }}
+                        {{ form.title.errors }}
+                        <div class="form-text">
+                            До 255 символов. Коротко и по сути.
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="{{ form.text.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.text.label }}
+                    </label>
+                    <div class="col-md-9">
+                        {{ form.text }}
+                        {{ form.text.errors }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="{{ form.tags.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.tags.label }}
+                    </label>
+                    <div class="col-md-9">
+                        {{ form.tags }}
+                        {{ form.tags.errors }}
+                        <div class="form-text">
+                            Через запятую, не больше 3 тегов.
+                            Латинские буквы, цифры и дефис.
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-9 offset-md-3 form__actions">
+                            <button type="submit" class="btn btn-neon">Спросить!</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </section>
+</section>
+{% endblock %}

@@ -1,0 +1,80 @@
+from django import forms
+from django.forms import ModelForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import get_user_model
+from django.db import transaction
+
+from pathlib import Path
+
+from .models import Profile
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs["class"] = "form-control"
+        self.fields["password"].widget.attrs["class"] = "form-control"
+
+class SignupForm(UserCreationForm):
+    email = forms.EmailField(label="Почта")
+    nickname = forms.CharField(label="Никнейм", max_length=40)
+
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = ("username", "email", "nickname")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for v in self.fields.values():
+            v.widget.attrs["class"] = "form-control"
+
+    @transaction.atomic
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            Profile.objects.create(
+                user=user,
+                nickname=self.cleaned_data["nickname"],
+            )
+
+        return user
+
+class ProfileForm(ModelForm):
+    email = forms.EmailField(label="Почта")
+    class Meta:
+        model = Profile
+        fields = ("email", "nickname", "avatar")
+        widgets = {
+            "avatar": forms.FileInput(
+            attrs={"accept": "image/jpeg,image/png,image/webp"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].initial = self.instance.user.email
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
+
+    @transaction.atomic
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if commit:
+            user = profile.user
+            user.email = self.cleaned_data["email"]
+            user.save()
+            profile.save()
+        return profile
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get("avatar")
+        if "avatar" not in self.files:
+            return avatar
+        if avatar.size > 2*1024*1024:
+            raise forms.ValidationError("Слишком большой размер аватарки: максимальный размер 2МБ")
+        if Path(avatar.name).suffix.lower() not in [".jpeg", ".jpg", ".png", ".webp"]:
+            raise forms.ValidationError("Неверное расширение файла аватарки: поддерживаются только .jpeg, .jpg, .webp, .png")
+        if avatar.image.format not in ["JPEG", "PNG", "WEBP"]:
+            raise forms.ValidationError("Неверный формат файла аватарки: поддерживаются только JPEG, WEBP, PNG")
+        return avatar
