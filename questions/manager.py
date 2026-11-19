@@ -33,6 +33,14 @@ class QuestionManager(models.Manager.from_queryset(QuestionQuerySet)):
     pass
 
 class AnswerQuerySet(models.QuerySet):
+    def before(self, answer):
+        earlier = models.Q(created_at__lt=answer.created_at) | models.Q(
+            created_at=answer.created_at, pk__lt=answer.pk,
+        )
+        if answer.is_correct:
+            return self.filter(is_correct=True).filter(earlier)
+        return self.filter(models.Q(is_correct=True) | earlier)
+
     def for_question(self, question_id):
         return self.filter(question_id=question_id)
 

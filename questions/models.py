@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 from .manager import AnswerManager, QuestionManager, TagManager
+from .pagination import PER_PAGE
 
 
 # Create your models here.
@@ -88,6 +89,12 @@ class Answer(models.Model):
     
     def __str__(self):
         return f"Ответ #{self.id} на вопрос #{self.question_id}"
+
+    def get_absolute_url(self):
+        preceding = Answer.objects.for_question(self.question_id).before(self).count()
+        page_number = preceding // PER_PAGE + 1
+        url = reverse("questions:detail", kwargs={"question_id": self.question_id})
+        return f"{url}?page={page_number}#answer-{self.pk}"
 
 class QuestionLike(models.Model):
     user = models.ForeignKey (

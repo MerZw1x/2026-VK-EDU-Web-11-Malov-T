@@ -46,16 +46,24 @@
     <section class="card answer-form mt-4">
         <div class="card-body">
             <h2 class="answer-form__title">Ваш ответ</h2>
-            <form action="#" method="post">
+            <form action="{% url 'questions:detail' question.pk %}?page={{ page_obj.number }}" method="post">
                 {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-danger form__alert" role="alert">Не удалось добавить ответ. Исправьте ошибки ниже.</div>
+                {% endif %}
+                {{ form.non_field_errors }}
+                <fieldset {% if not request.user.is_authenticated %}disabled title="Войдите, чтобы ответить"{% endif %}>
                 <div class="mb-3">
-                    <label for="answer-text" class="form-label visually-hidden">Текст ответа</label>
-                    <textarea class="form-control answer-form__textarea" id="answer-text" name="text"
-                        rows="6" placeholder="Напишите ваш ответ..." aria-describedby="answer-help"
-                        required></textarea>
-                    <div id="answer-help" class="form-text">Опишите решение подробно, код оформляйте отдельным блоком.</div>
+                    <label for="{{ form.text.id_for_label }}" class="form-label visually-hidden">Текст ответа</label>
+                    {{ form.text }}
+                    {{ form.text.errors }}
+                    <div id="answer-help" class="form-text">До 5000 символов. Опишите решение подробно.</div>
                 </div>
                 <button type="submit" class="btn btn-neon">Ответить</button>
+                </fieldset>
+                {% if not request.user.is_authenticated %}
+                    <a class="form__link" href="{% url 'core:login' %}?next={{ question.get_absolute_url|urlencode }}">Войти, чтобы ответить</a>
+                {% endif %}
             </form>
         </div>
     </section>
