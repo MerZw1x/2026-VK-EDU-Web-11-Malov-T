@@ -34,10 +34,11 @@
         </div>
     </article>
 
-    <section class="answers" id="answers">
+    <section class="answers" id="answers" data-correct-url="{% url 'questions:correct_answer' question.pk %}">
         <h2 class="answers__title">Ответы ({{ answers_count }})</h2>
+        <div class="alert alert-danger correct-answer-error" role="alert" hidden></div>
         {% for answer in answers %}
-            {% include "questions/includes/answer_card.html" with answer=answer can_vote=request.user.is_authenticated only %}
+            {% include "questions/includes/answer_card.html" with answer=answer can_vote=request.user.is_authenticated viewer_id=request.user.pk question_author_id=question.author_id only %}
         {% empty %}
             <p>На этот вопрос пока никто не ответил.</p>
         {% endfor %}

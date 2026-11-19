@@ -9,12 +9,17 @@
         <div class="answer-card__main">
             <p class="answer-card__text">{{ answer.text }}</p>
             <div class="answer-card__footer">
+                {% if can_vote and viewer_id == question_author_id %}
                 <div class="form-check answer-card__correct">
-                    <input class="form-check-input" type="checkbox"
+                    <input class="form-check-input js-correct-answer" type="checkbox"
+                           data-answer-id="{{ answer.pk }}"
                            id="answer-correct-{{ answer.id }}"
                            {% if answer.is_correct %}checked{% endif %}>
                     <label class="form-check-label" for="answer-correct-{{ answer.id }}">Правильный ответ</label>
                 </div>
+                {% elif answer.is_correct %}
+                    <span class="answer-card__correct">Правильный ответ</span>
+                {% endif %}
                 {% if answer.author %}
                     <span class="answer-card__author">{{ answer.author.username }}</span>
                 {% else %}

@@ -10,6 +10,7 @@ urlpatterns = [
     path("tag/<slug:tag_slug>/", views.tag, name="tag"),
     path("question/<int:question_id>/", views.detail, name="detail"),
     path("question/<int:question_id>/vote/", views.question_vote, name="question_vote"),
+    path("question/<int:question_id>/correct-answer/", views.correct_answer, name="correct_answer"),
     path("answer/<int:answer_id>/vote/", views.answer_vote, name="answer_vote"),
     path("ask/", views.ask, name="ask"),
 ]

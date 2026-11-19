@@ -5,9 +5,32 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 
 from .models import Answer, Question, Tag
-from .forms import AnswerForm, AnswerVoteForm, QuestionForm, QuestionVoteForm
+from .forms import AnswerForm, AnswerVoteForm, CorrectAnswerForm, QuestionForm, QuestionVoteForm
 
 from .pagination import paginate
+
+
+def correct_answer(request, question_id):
+    if request.method != "POST":
+        response = JsonResponse({"error": "Разрешён только метод POST."}, status=405)
+        response["Allow"] = "POST"
+        return response
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Войдите, чтобы выбрать правильный ответ."}, status=401)
+    question = Question.objects.filter(pk=question_id).first()
+    if question is None:
+        return JsonResponse({"error": "Вопрос не найден."}, status=404)
+    form = CorrectAnswerForm(request.POST, user=request.user, question=question)
+    if not form.is_valid():
+        return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+    try:
+        answer = form.save()
+    except ValidationError as error:
+        form.add_error(None, error)
+        return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+    except Question.DoesNotExist:
+        return JsonResponse({"error": "Вопрос не найден."}, status=404)
+    return JsonResponse({"answer_id": answer.pk, "is_correct": answer.is_correct})
 
 
 def question_vote(request, question_id):

@@ -126,6 +126,44 @@ class QuestionVoteForm(forms.Form):
         return question
 
 
+class CorrectAnswerForm(forms.Form):
+    answer_id = forms.IntegerField(min_value=1)
+
+    def __init__(self, *args, user, question, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.question = question
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.user.is_authenticated or self.question.author_id != self.user.pk:
+            raise forms.ValidationError("Только автор вопроса может выбирать правильный ответ.")
+        answer_id = cleaned_data.get("answer_id")
+        if answer_id is not None:
+            answer = Answer.objects.filter(pk=answer_id, question=self.question).first()
+            if answer is None:
+                raise forms.ValidationError("Ответ не найден в этом вопросе.")
+            cleaned_data["answer"] = answer
+        return cleaned_data
+
+    @transaction.atomic
+    def save(self):
+        question = Question.objects.select_for_update().get(pk=self.question.pk)
+        if not self.user.is_authenticated or question.author_id != self.user.pk:
+            raise forms.ValidationError("Только автор вопроса может выбирать правильный ответ.")
+        answer = Answer.objects.filter(
+            pk=self.cleaned_data["answer_id"], question=question,
+        ).first()
+        if answer is None:
+            raise forms.ValidationError("Ответ не найден в этом вопросе.")
+        is_correct = not answer.is_correct
+        Answer.objects.filter(question=question, is_correct=True).update(is_correct=False)
+        answer.is_correct = is_correct
+        if is_correct:
+            answer.save(update_fields=["is_correct"])
+        return answer
+
+
 class AnswerVoteForm(forms.Form):
     value = forms.TypedChoiceField(
         choices=((1, "Лайк"), (-1, "Дизлайк")),
