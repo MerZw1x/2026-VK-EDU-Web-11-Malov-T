@@ -58,6 +58,13 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse("questions:detail", kwargs={"question_id": self.pk})
 
+    @property
+    def vote_state(self):
+        votes = getattr(self, "user_votes", [])
+        if not votes:
+            return ""
+        return "liked" if votes[0].value == 1 else "disliked"
+
 
 class Answer(models.Model):
     author = models.ForeignKey (
@@ -95,6 +102,13 @@ class Answer(models.Model):
         page_number = preceding // PER_PAGE + 1
         url = reverse("questions:detail", kwargs={"question_id": self.question_id})
         return f"{url}?page={page_number}#answer-{self.pk}"
+
+    @property
+    def vote_state(self):
+        votes = getattr(self, "user_votes", [])
+        if not votes:
+            return ""
+        return "liked" if votes[0].value == 1 else "disliked"
 
 class QuestionLike(models.Model):
     user = models.ForeignKey (

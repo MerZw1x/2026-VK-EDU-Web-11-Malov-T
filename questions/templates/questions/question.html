@@ -8,7 +8,8 @@
         <div class="card-body question-card__body">
             <div class="question-card__aside">
                 {% include "core/includes/avatar.html" with user=question.author css_class="question-card__avatar" only %}
-                {% include "questions/includes/vote.html" with score=question.rating vote_state="" only %}
+                {% url 'questions:question_vote' question.pk as vote_url %}
+                {% include "questions/includes/vote.html" with score=question.rating vote_state=question.vote_state vote_url=vote_url can_vote=request.user.is_authenticated only %}
             </div>
             <div class="question-card__main">
                 <h1 class="question-card__title">{{ question.title }}</h1>
@@ -36,7 +37,7 @@
     <section class="answers" id="answers">
         <h2 class="answers__title">Ответы ({{ answers_count }})</h2>
         {% for answer in answers %}
-            {% include "questions/includes/answer_card.html" with answer=answer only %}
+            {% include "questions/includes/answer_card.html" with answer=answer can_vote=request.user.is_authenticated only %}
         {% empty %}
             <p>На этот вопрос пока никто не ответил.</p>
         {% endfor %}

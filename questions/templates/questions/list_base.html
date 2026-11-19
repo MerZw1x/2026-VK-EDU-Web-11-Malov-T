@@ -11,7 +11,7 @@
 
     {% block question_list %}
         {% for question in questions %}
-            {% include "questions/includes/question_card.html" with question=question only %}
+            {% include "questions/includes/question_card.html" with question=question can_vote=request.user.is_authenticated only %}
         {% empty %}
             <p>Вопросов пока нет.</p>
         {% endfor %}

@@ -1,5 +1,20 @@
-<div class="vote{% if vote_state %} vote--{{ vote_state }}{% endif %}">
-                        <button type="button" class="vote__btn vote__btn--up" aria-label="Нравится" aria-pressed="{% if vote_state == 'liked' %}true{% else %}false{% endif %}">▲</button>
-                        <span class="vote__count">{{ score }}</span>
-                        <button type="button" class="vote__btn vote__btn--down" aria-label="Не нравится" aria-pressed="{% if vote_state == 'disliked' %}true{% else %}false{% endif %}">▼</button>
-                    </div>
+<div class="vote{% if vote_state %} vote--{{ vote_state }}{% endif %}"
+     data-vote-url="{{ vote_url }}"
+     data-can-vote="{{ can_vote|yesno:'true,false' }}">
+    <button type="button"
+            class="vote__btn vote__btn--up"
+            aria-label="Нравится"
+            aria-pressed="{% if vote_state == 'liked' %}true{% else %}false{% endif %}"
+            data-value="1"
+            {% if not can_vote %}disabled title="Войдите, чтобы голосовать"{% elif vote_state == 'liked' %}disabled title="Вы уже поставили такую оценку"{% endif %}>▲</button>
+
+    <span class="vote__count">{{ score }}</span>
+
+    <button type="button"
+            class="vote__btn vote__btn--down"
+            aria-label="Не нравится"
+            aria-pressed="{% if vote_state == 'disliked' %}true{% else %}false{% endif %}"
+            data-value="-1"
+            {% if not can_vote %}disabled title="Войдите, чтобы голосовать"{% elif vote_state == 'disliked' %}disabled title="Вы уже поставили такую оценку"{% endif %}>▼</button>
+    <span class="vote__error" role="alert" hidden></span>
+</div>

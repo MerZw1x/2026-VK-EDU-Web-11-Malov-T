@@ -13,6 +13,12 @@ class TagManager(models.Manager.from_queryset(TagQuerySet)):
 
 
 class QuestionQuerySet(models.QuerySet):
+    def with_user_vote(self, user):
+        from .models import QuestionLike
+
+        votes = QuestionLike.objects.filter(user=user) if user.is_authenticated else QuestionLike.objects.none()
+        return self.prefetch_related(models.Prefetch("likes", queryset=votes, to_attr="user_votes"))
+
     def new(self):
         return self.order_by("-created_at", "-id")
 
@@ -33,6 +39,12 @@ class QuestionManager(models.Manager.from_queryset(QuestionQuerySet)):
     pass
 
 class AnswerQuerySet(models.QuerySet):
+    def with_user_vote(self, user):
+        from .models import AnswerLike
+
+        votes = AnswerLike.objects.filter(user=user) if user.is_authenticated else AnswerLike.objects.none()
+        return self.prefetch_related(models.Prefetch("likes", queryset=votes, to_attr="user_votes"))
+
     def before(self, answer):
         earlier = models.Q(created_at__lt=answer.created_at) | models.Q(
             created_at=answer.created_at, pk__lt=answer.pk,

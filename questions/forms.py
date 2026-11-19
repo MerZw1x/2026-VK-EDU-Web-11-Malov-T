@@ -3,7 +3,7 @@ from django.db import transaction
 
 import re
 
-from .models import Answer, Question, Tag
+from .models import Answer, AnswerLike, Question, QuestionLike, Tag
 
 class QuestionForm(forms.ModelForm):
     tags = forms.CharField(label="Теги", required=False, max_length=100, help_text="Через запятую, не больше 3 тегов.")
@@ -80,5 +80,91 @@ class AnswerForm(forms.ModelForm):
         answer.author = author
         answer.question = question
         answer.save()
+        return answer
+
+
+class QuestionVoteForm(forms.Form):
+    value = forms.TypedChoiceField(
+        choices=((1, "Лайк"), (-1, "Дизлайк")),
+        coerce=int,
+    )
+
+    def __init__(self, *args, user, question, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.question = question
+
+    def clean(self):
+        cleaned_data = super().clean()
+        value = cleaned_data.get("value")
+        if value is None:
+            return cleaned_data
+        previous = QuestionLike.objects.filter(
+            user=self.user, question=self.question,
+        ).first()
+        if previous is not None and previous.value == value:
+            raise forms.ValidationError("Вы уже поставили такую оценку.")
+        return cleaned_data
+
+    @transaction.atomic
+    def save(self):
+        question = Question.objects.select_for_update().get(pk=self.question.pk)
+        value = self.cleaned_data["value"]
+        previous = QuestionLike.objects.filter(
+            user=self.user, question=question,
+        ).first()
+        old_value = previous.value if previous is not None else 0
+        if old_value == value:
+            raise forms.ValidationError("Вы уже поставили такую оценку.")
+        QuestionLike.objects.update_or_create(
+            user=self.user,
+            question=question,
+            defaults={"value": value},
+        )
+        question.rating += value - old_value
+        question.save(update_fields=["rating"])
+        return question
+
+
+class AnswerVoteForm(forms.Form):
+    value = forms.TypedChoiceField(
+        choices=((1, "Лайк"), (-1, "Дизлайк")),
+        coerce=int,
+    )
+
+    def __init__(self, *args, user, answer, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.answer = answer
+
+    def clean(self):
+        cleaned_data = super().clean()
+        value = cleaned_data.get("value")
+        if value is None:
+            return cleaned_data
+        previous = AnswerLike.objects.filter(
+            user=self.user, answer=self.answer,
+        ).first()
+        if previous is not None and previous.value == value:
+            raise forms.ValidationError("Вы уже поставили такую оценку.")
+        return cleaned_data
+
+    @transaction.atomic
+    def save(self):
+        answer = Answer.objects.select_for_update().get(pk=self.answer.pk)
+        value = self.cleaned_data["value"]
+        previous = AnswerLike.objects.filter(
+            user=self.user, answer=answer,
+        ).first()
+        old_value = previous.value if previous is not None else 0
+        if old_value == value:
+            raise forms.ValidationError("Вы уже поставили такую оценку.")
+        AnswerLike.objects.update_or_create(
+            user=self.user,
+            answer=answer,
+            defaults={"value": value},
+        )
+        answer.rating += value - old_value
+        answer.save(update_fields=["rating"])
         return answer
 

@@ -588,3 +588,9 @@
 .search {
     min-width: 0;
 }
+
+.vote__error {
+    color: #ff4d6d;
+    font-size: 0.75rem;
+    max-width: 180px;
+}
