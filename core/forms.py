@@ -4,6 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
+from pathlib import Path
+
 from .models import Profile
 
 class LoginForm(AuthenticationForm):
@@ -39,10 +41,14 @@ class SignupForm(UserCreationForm):
 
 class ProfileForm(ModelForm):
     email = forms.EmailField(label="Почта")
-
     class Meta:
         model = Profile
-        fields = ("email", "nickname")
+        fields = ("email", "nickname", "avatar")
+        widgets = {
+            "avatar": forms.FileInput(
+            attrs={"accept": "image/jpeg,image/png,image/webp"}
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,3 +66,15 @@ class ProfileForm(ModelForm):
             user.save()
             profile.save()
         return profile
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get("avatar")
+        if "avatar" not in self.files:
+            return avatar
+        if avatar.size > 2*1024*1024:
+            raise forms.ValidationError("Слишком большой размер аватарки: максимальный размер 2МБ")
+        if Path(avatar.name).suffix.lower() not in [".jpeg", ".jpg", ".png", ".webp"]:
+            raise forms.ValidationError("Неверное расширение файла аватарки: поддерживаются только .jpeg, .jpg, .webp, .png")
+        if avatar.image.format not in ["JPEG", "PNG", "WEBP"]:
+            raise forms.ValidationError("Неверный формат файла аватарки: поддерживаются только JPEG, WEBP, PNG")
+        return avatar
