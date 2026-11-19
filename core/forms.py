@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import get_user_model
 from django.db import transaction
@@ -35,3 +36,27 @@ class SignupForm(UserCreationForm):
             )
 
         return user
+
+class ProfileForm(ModelForm):
+    email = forms.EmailField(label="Почта")
+
+    class Meta:
+        model = Profile
+        fields = ("email", "nickname")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].initial = self.instance.user.email
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
+
+    @transaction.atomic
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if commit:
+            user = profile.user
+            user.email = self.cleaned_data["email"]
+            user.save()
+            profile.save()
+        return profile

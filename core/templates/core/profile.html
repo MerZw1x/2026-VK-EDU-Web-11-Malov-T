@@ -10,28 +10,34 @@
     </div>
     <section class="card form profile-form">
         <div class="card-body">
-            <form action="#" method="post" enctype="multipart/form-data">
+            <form action="{% url 'core:profile' %}" method="post">
                 {% csrf_token %}
-                <div class="alert alert-danger form__alert" role="alert">Не удалось сохранить профиль. Проверьте email.</div>
-                <div class="row mb-3">
-                    <label for="profile-username" class="col-md-3 col-form-label form__label">Логин</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" id="profile-username" name="username" value="malov" autocomplete="username" required minlength="3" maxlength="30" aria-describedby="profile-username-help">
-                        <div id="profile-username-help" class="form-text">От 3 до 30 символов.</div>
+                {% if form.errors %}
+                    <div class="alert alert-danger form__alert" role="alert">
+                        Не удалось сохранить профиль. Исправьте ошибки ниже.
                     </div>
-                </div>
+                {% endif %}
+                {{ form.non_field_errors }}
+                <p class="form-control-plaintext">{{ request.user.username }}</p>
                 <div class="row mb-3">
-                    <label for="profile-email" class="col-md-3 col-form-label form__label">Email</label>
+                    <label for="{{ form.email.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.email.label }}
+                    </label>
                     <div class="col-md-9">
-                        <input type="email" class="form-control is-invalid" id="profile-email" name="email" value="t.malov@" autocomplete="email" required maxlength="254" aria-invalid="true" aria-describedby="profile-email-error">
-                        <div id="profile-email-error" class="invalid-feedback">Введите корректный email, например name@example.com.</div>
+                        {{ form.email }}
+                        {{ form.email.errors }}
                     </div>
-                </div>
+                </div>  
                 <div class="row mb-3">
-                    <label for="profile-nickname" class="col-md-3 col-form-label form__label">Никнейм</label>
+                    <label for="{{ form.nickname.id_for_label }}"
+                        class="col-md-3 col-form-label form__label">
+                        {{ form.nickname.label }}
+                    </label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" id="profile-nickname" name="nickname" value="Малов Тимофей" required maxlength="40" aria-describedby="profile-nickname-help">
-                        <div id="profile-nickname-help" class="form-text">До 40 символов. Так вас будут видеть другие пользователи.</div>
+                        {{ form.nickname }}
+                        {{ form.nickname.errors }}
+                        <div class="form-text">До 40 символов</div>
                     </div>
                 </div>
                 <div class="row mb-3">
