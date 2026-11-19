@@ -1,13 +1,17 @@
 {% load static %}
 
-{% if show_profile_user %}
+{% if request.user.is_authenticated %}
     <div class="userblock">
-        <img class="userblock__avatar rounded-circle" src="{% static 'img/avatars/kotik-banan.jpg' %}" alt="Аватарка">
+        {% include "core/includes/avatar.html" with user=request.user css_class="userblock__avatar rounded-circle" only %}
         <div class="userblock__info">
-            <span class="userblock__name">Малов Тимофей</span>
+            <span class="userblock__name">{{ request.user.username }}</span>
             <div class="userblock__links">
                 <a href="{% url 'core:profile' %}" class="userblock__link">Настройки</a>
-                <a href="#" class="userblock__link">Выйти</a>
+                <form action="{% url 'core:logout' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="userblock__link">Выйти</button>
+                </form>
             </div>
         </div>
     </div>

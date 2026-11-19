@@ -32,6 +32,8 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+LOGIN_URL = "core:login"
+LOGIN_REDIRECT_URL = "questions:index"
 
 # Application definition
 
